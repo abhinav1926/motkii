@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const msgParagraphs = message.querySelectorAll('p');
             if (msgParagraphs.length >= 2) {
                 msgParagraphs[0].innerHTML = "I know it's a <strong>Rose Day</strong>...";
-                msgParagraphs[1].innerHTML = "But for you, my love, only your favorite <strong>Tulips</strong> will do! 🌷✨";
+                msgParagraphs[1].innerHTML = "But for you, Bebo, only your favorite <strong>Tulips</strong> will do! 🌷✨";
+                msgParagraphs[2].innerHTML = "A rose speaks of love silently, in a language known only to the heart.";
+                msgParagraphs[3].innerHTML = "You are my beautiful rose. Happy Rose Day, my bebo! ❤️";
             }
 
             // Play Music
@@ -130,4 +132,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
 
