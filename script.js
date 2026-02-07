@@ -1,127 +1,133 @@
-const noBtn = document.getElementById('no-btn');
-const yesBtn = document.getElementById('yes-btn');
-const proposalView = document.getElementById('proposal-view');
-const giftView = document.getElementById('gift-view');
-const noMessage = document.getElementById('no-message');
-const giftContentDisplay = document.getElementById('gift-content-display');
-const heroGif = document.querySelector('.hero-gif');
+document.addEventListener('DOMContentLoaded', () => {
+    const roseContainer = document.getElementById('rose-container');
+    const roseImg = document.getElementById('rose');
+    const tulipImg = document.getElementById('tulip');
+    const message = document.getElementById('message');
+    const instruction = document.querySelector('.instruction');
 
-const giftContents = {
-    1: document.getElementById('gift-1-content'), // Song
-    2: document.getElementById('gift-2-content'), // Flowers
-    3: document.getElementById('gift-3-content')  // Message
-};
+    // Initial State: Rose is visible
+    roseImg.classList.add('visible-flower');
+    tulipImg.classList.add('hidden'); // Ensure CSS class structure handles this
+    tulipImg.classList.remove('visible-flower');
 
-const noTexts = [
-    "Really? 😢",
-    "Think again! 🤔",
-    "Are you sure? 🥺",
-    "Don't do this! 💔",
-    "Last chance! ⚡",
-    "Please? 🧸",
-    "I'll be sad... 😿"
-];
+    // Reveal Tulip on click
+    let isTulip = false;
 
-const sadGifs = [
-    "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif",
+    roseContainer.addEventListener('click', () => {
+        if (!isTulip) {
+            // Transform!
+            isTulip = true;
 
-];
+            // Hide Rose
+            roseImg.classList.remove('visible-flower');
+            roseImg.classList.add('hidden');
 
-let clickCount = 0;
+            // Show Tulip with delay for swap effect
+            setTimeout(() => {
+                tulipImg.classList.remove('hidden');
+                tulipImg.classList.add('visible-flower');
+            }, 100); // Slight overlap possibility, but CSS transition handles scale
 
-// Move "No" button logic
-function moveNoButton() {
-    // We want the user to be able to click it, so we don't move on hover immediately
-}
+            // Show Message
+            message.classList.remove('hidden'); // Fix: Remove display:none
+            setTimeout(() => {
+                message.classList.add('visible'); // Trigger opacity fade-in
+            }, 10); // Small delay to ensure display:block applies first for transition
 
-function handleNoClick() {
-    clickCount++;
+            instruction.style.display = 'none';
 
-    // Change GIF to something sad
-    const randomGifIndex = Math.floor(Math.random() * sadGifs.length);
-    heroGif.src = sadGifs[randomGifIndex];
+            // Change Text to be specific
+            const msgParagraphs = message.querySelectorAll('p');
+            if (msgParagraphs.length >= 2) {
+                msgParagraphs[0].innerHTML = "I know it's a <strong>Rose Day</strong>...";
+                msgParagraphs[1].innerHTML = "But for you, my love, only your favorite <strong>Tulips</strong> will do! 🌷✨";
+            }
 
-    if (clickCount === 1) {
-        // 1st click: redirect to new position
-        teleportButton();
-        noBtn.innerText = "Really? 😢";
-    } else if (clickCount === 2) {
-        // 2nd click: give another text like "Emotional" AND redirect
-        noBtn.innerText = "Think again! 🤔";
-        teleportButton();
-    } else if (clickCount >= 7) {
-        // 7th click: Trigger Rejection Screen
-        proposalView.classList.add('hidden');
-        document.getElementById('reject-view').classList.remove('hidden');
-        document.getElementById('reject-view').classList.add('active'); // Ensure flex is applied if needed, though CSS handles it
-    } else {
-        // Next clicks: redirect to another new location
-        const randomIndex = Math.floor(Math.random() * noTexts.length);
-        noBtn.innerText = noTexts[randomIndex];
-        teleportButton();
-    }
+            // Play Music
+            const audio = document.getElementById('bg-music');
+            if (audio) {
+                audio.volume = 1;
+                audio.play().catch(e => console.log("Audio play failed:", e));
+            }
 
-    // Increase Yes button size to encourage saying Yes
-    const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-    yesBtn.style.fontSize = `${currentSize * 1.2}px`;
-}
-
-function teleportButton() {
-    const btnRect = noBtn.getBoundingClientRect();
-
-    // Calculate max boundaries within the viewport
-    const maxX = window.innerWidth - btnRect.width - 20;
-    const maxY = window.innerHeight - btnRect.height - 20;
-
-    const randomX = Math.max(10, Math.random() * maxX);
-    const randomY = Math.max(10, Math.random() * maxY);
-
-    noBtn.style.position = 'fixed';
-    noBtn.style.left = randomX + 'px';
-    noBtn.style.top = randomY + 'px';
-}
-
-function handleYesClick() {
-    // Confetti
-    confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
+            // Explosion of sparkles and tulips
+            createBurst();
+        } else {
+            // Clicking again just bursts more joy
+            createBurst();
+        }
     });
 
-    // Switch Views
-    proposalView.classList.remove('active');
-    proposalView.classList.add('hidden');
-    giftView.classList.remove('hidden');
-    giftView.classList.add('active');
-}
+    // Advanced Falling System
+    function createFallingElement() {
+        const element = document.createElement('div');
 
-function openGift(id) {
-    // Hide all specific contents first
-    Object.values(giftContents).forEach(el => el.classList.add('hidden'));
+        // Probabilities: 
+        // If Tulip mode: 60% Tulip, 20% Petal, 20% Sparkle
+        // If Rose mode: 10% Tulip (rare), 80% Petal, 10% Sparkle
+        const rand = Math.random();
+        let type = 'petal';
 
-    // Show overlay
-    giftContentDisplay.classList.remove('hidden');
+        if (isTulip) {
+            if (rand < 0.6) type = 'tulip';
+            else if (rand < 0.8) type = 'petal';
+            else type = 'sparkle';
+        } else {
+            if (rand < 0.8) type = 'petal';
+            else type = 'sparkle'; // Keep tulips hidden until reveal? Or rare tease. Let's keep hidden.
+        }
 
-    // Show specific content
-    const content = giftContents[id];
-    if (content) {
-        content.classList.remove('hidden');
+        if (type === 'tulip') {
+            element.classList.add('falling-tulip');
+            element.innerHTML = '🌷'; // Use Emoji for falling element or small SVG
+            element.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            element.style.position = 'absolute';
+            element.style.zIndex = '5';
+        } else if (type === 'sparkle') {
+            element.classList.add('sparkle');
+        } else {
+            element.classList.add('petal');
+        }
 
-        // If it's the song (Gift 1), try playing it
-        if (id === 1) {
-            const audio = document.getElementById('love-song');
-            audio.play().catch(e => console.log("Auto-play prevented:", e));
+        // Randomize properties
+        const startLeft = Math.random() * 100;
+        const animationDuration = Math.random() * 3 + 4; // 4-7s
+
+        element.style.left = startLeft + 'vw';
+
+        // Custom animation for emojis to fall
+        if (type === 'tulip') {
+            element.style.top = '-50px';
+            // We need to inject a falling animation for these text/emoji elements if not using the 'petal' CSS
+            // Let's reuse 'fall' animation but apply it via JS logic or add a class that uses it
+            element.style.animation = `fall ${animationDuration}s linear infinite`;
+        } else if (type === 'petal') {
+            element.style.animationDuration = animationDuration + 's';
+            // Random color variation for petals
+            const colors = ['#ffb7c5', '#ff9eaa', '#ffc0cb', '#DC143C'];
+            element.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            // Random size
+            const size = Math.random() * 10 + 10;
+            element.style.width = size + 'px';
+            element.style.height = size + 'px';
+        }
+
+        document.body.appendChild(element);
+
+        // Remove after animation
+        setTimeout(() => {
+            element.remove();
+        }, animationDuration * 1000);
+    }
+
+    // Spawn rate
+    setInterval(createFallingElement, 200);
+
+    // Burst effect
+    function createBurst() {
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createFallingElement, i * 50); // Staggered burst
         }
     }
-}
+});
 
-function closeGift() {
-    giftContentDisplay.classList.add('hidden');
-
-    // Stop audio if playing
-    const audio = document.getElementById('love-song');
-    audio.pause();
-    audio.currentTime = 0;
-}
