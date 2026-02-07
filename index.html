@@ -4,88 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap"
+    <title>Happy Rose Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="container">
-        <!-- Screen 1: The Question -->
-        <div id="proposal-view" class="view active">
-            <h1 class="bounce-text">Hey Dayan, Will you be my Valentine? 💖</h1>
-            <div class="gif-container">
-                <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" alt="Cute Bears"
-                    class="hero-gif">
+        <div class="falling-petals"></div>
+        <div class="content">
+            <h1 class="title">Happy Rose Day!</h1>
+            <div class="rose-container" id="rose-container">
+                <!-- Image will be inserted here via CSS or IMG tag, let's use IMG for better control -->
+                <img src="rose.svg" alt="A beautiful red rose" class="rose-img" id="rose">
+                <img src="tulip.svg" alt="A lovely pink tulip" class="tulip-img hidden" id="tulip">
             </div>
-            <div class="buttons">
-                <button id="yes-btn" onclick="handleYesClick()">YES! 😍</button>
-                <button id="no-btn" onmouseover="moveNoButton()" onclick="handleNoClick()">No 😢</button>
-            </div>
-            <p id="no-message"></p>
-        </div>
-
-        <!-- Screen 2: The Gifts -->
-        <div id="gift-view" class="view hidden">
-            <h1>Yay! I knew it! ❤️</h1>
-            <p>Here are your gifts (Open them all!)</p>
-            <div class="gift-container">
-                <div class="gift-box" onclick="openGift(1)">
-                    <div class="gift-emoji">🎁</div>
-                    <p>Gift 1</p>
-                </div>
-                <div class="gift-box" onclick="openGift(2)">
-                    <div class="gift-emoji">🎁</div>
-                    <p>Gift 2</p>
-                </div>
-                <div class="gift-box" onclick="openGift(3)">
-                    <div class="gift-emoji">🎁</div>
-                    <p>Gift 3</p>
-                </div>
-            </div>
-
-            <!-- Hidden Content for Gifts -->
-            <div id="gift-content-display" class="hidden">
-                <div id="gift-1-content" class="gift-content hidden">
-                    <h3>🎶 For You...</h3>
-                    <p>Playing our song...</p>
-                    <audio id="love-song" controls>
-                        <source src="videoplayback.mp4" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-                <div id="gift-2-content" class="gift-content hidden">
-                    <h3>🌹 A Bouquet for my Love</h3>
-                    <div class="flowers">
-                        💐🌺🌷🌸🌹
-                    </div>
-                </div>
-                <div id="gift-3-content" class="gift-content hidden">
-                    <h3>💌 From my Heart</h3>
-                    <p class="long-message">
-                     Uh are my fav, like absolute fav, the way I lobb bebo. And that's enough to say as I really love you batu. But somehow I love uh even more and more and more. Every time I think thats the limit, it just keeps growing. You make me smile without even trying.So yeahhh yuh are myy bebo....and I love you more and more and more.
-                </div>
-                <button onclick="closeGift()" class="close-btn">Close Gift</button>
+            <p class="instruction">Tap the rose to reveal your gift 🎁</p>
+            <div class="message hidden" id="message">
+                <p>"A rose speaks of love silently, in a language known only to the heart."</p>
+                <p>You are my beautiful rose. Happy Rose Day, my bebo! ❤️</p>
             </div>
         </div>
-
-        <!-- Screen 3: Rejection (YOU ARE BAD) -->
-        <div id="reject-view" class="view hidden">
-            <h1>You are so bad! 😭</h1>
-            <p>You broke my heart...</p>
-            <div class="gif-container">
-                <img src="https://media.tenor.com/P5b6sM91h0cAAAAi/sad-bear-cry.gif" alt="Crying Bear" class="hero-gif">
-            </div>
-        </div>
+        <audio id="bg-music" loop>
+            <source src="song.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
     </div>
-
-    <!-- Canvas for Confetti -->
-    <canvas id="confetti-canvas"></canvas>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 
 </html>
